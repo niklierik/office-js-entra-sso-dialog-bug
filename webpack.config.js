@@ -4,7 +4,7 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const urlDev = "https://localhost:3000/";
+const urlDev = "https://0.0.0.0:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 async function getHttpsOptions() {
@@ -17,9 +17,8 @@ module.exports = async (env, options) => {
   const config = {
     devtool: "source-map",
     entry: {
-      polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       taskpane: ["./src/taskpane/taskpane.ts", "./src/taskpane/taskpane.html"],
-      dialog: ["./src/dialog/dialog.html", "./src/dialog/dialog.ts"],
+      dialog: ["./src/dialog-redirect/dialog-redirect.html"],
     },
     output: {
       clean: true,
@@ -54,7 +53,7 @@ module.exports = async (env, options) => {
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
-        chunks: ["polyfill", "taskpane"],
+        chunks: ["taskpane"],
       }),
       new CopyWebpackPlugin({
         patterns: [
@@ -76,9 +75,9 @@ module.exports = async (env, options) => {
         ],
       }),
       new HtmlWebpackPlugin({
-        filename: "dialog.html",
-        template: "./src/dialog/dialog.html",
-        chunks: ["polyfill", "dialog"],
+        filename: "dialog-redirect.html",
+        template: "./src/dialog-redirect/dialog-redirect.html",
+        chunks: ["dialog"],
       }),
     ],
     devServer: {

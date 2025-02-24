@@ -9,22 +9,48 @@ import $ from "jquery";
 /* global document, Office */
 
 Office.onReady(() => {
-  $("#open-dialog").on("click", () => {});
+  console.log("Opened addin");
+  $(".dialog-closed-text").hide();
+  $("#open-dialog").removeAttr("disabled");
+  $("#open-dialog").on("click", async () => {
+    const dialog = await openDialog();
+
+    console.log("Opened dialog");
+
+    dialog.addEventHandler(Office.EventType.DialogMessageReceived, (message) => {
+      console.log("Dialog message", message);
+    });
+
+    dialog.addEventHandler(Office.EventType.DialogEventReceived, (message) => {
+      console.log("Dialog event", message);
+
+      if (message["error"] === 12006) {
+        $(".dialog-closed-text").show();
+      }
+    });
+
+    console.log("Subscribed to dialog events.");
+  });
 });
 
 export async function run() {}
 
 async function openDialog() {
-  return new Promise((resolve, reject) => {
+  return new Promise<Office.Dialog>((resolve, reject) => {
     Office.context.ui.displayDialogAsync(
-      window.location.origin + "/dialog.html",
+      window.location.origin + "/test/dialog-redirect.html",
       {
         width: 40,
         height: 40,
         displayInIframe: false,
       },
       (result) => {
-        console.log(result);
+        if (result.status == Office.AsyncResultStatus.Failed) {
+          reject(result);
+          return;
+        }
+
+        resolve(result.value);
       }
     );
   });
