@@ -8,10 +8,12 @@
   </head>
 
   <body class="ms-font-m ms-welcome ms-Fabric">
-    <a
-      href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize?response_type=code&redirect_uri=https%3A%2F%2Fgw.internal%2Fgenesisrest.svc%2Fidentity%2Fprovidercallback&state=5c606e3c-8594-4336-83ae-83bf65e7c854&nonce=cHrbx2U2OowT5l1wmnpRyv4vhcBddaM7x76wh9uUK5I&client_id=519a1164-0052-4b26-9742-02035a709f2d&scope=openid+profile&oid"
-    >
-      <button id="open-ms">Login Entra SSO</button>
-    </a>
+    <button id="open-ms" onclick="onClick()">Login Entra SSO (with JS event)</button>
+    <script>
+      function onClick() {
+        window.location.href =
+          "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?response_type=code&redirect_uri=https%3A%2F%2Fgw.internal%2Fgenesisrest.svc%2Fidentity%2Fprovidercallback&state=5c606e3c-8594-4336-83ae-83bf65e7c854&nonce=cHrbx2U2OowT5l1wmnpRyv4vhcBddaM7x76wh9uUK5I&client_id=519a1164-0052-4b26-9742-02035a709f2d&scope=openid+profile&oid";
+      }
+    </script>
   </body>
 </html>
